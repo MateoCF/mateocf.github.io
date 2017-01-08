@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>M Digital Services</title>
+  <link rel="stylesheet" href="style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <script>
+  $("input[type=radio]").change(function(){
+      updateTotal();
+  });
+
+  function updateTotal(){
+      var total = 0;
+      $("input[type=radio]:checked").each(function(){
+          total += parseFloat($(this).val());
+      });
+      $("#total").html(total);
+  }
+  </script>
+  <script>
+  $(document).ready(function(){
+      $( ".hb" ).click(function() {
+        $( "nav" ).toggleClass( "navexpanded" );
+        $( "nav" ).toggleClass( "mini" );
+        $( this ).toggleClass('open');
+      });
+      $( "#notablet" ).click(function() {
+          $( this ).hide();
+      });
+  });
+  </script>
+</head>
+<body>
+<div id="mds"><img src="images/sidelogo.svg"> - Digital Services</div>
+<nav class="mini">
+    <menuitem><a href="work.html">Work</a></menuitem>
+    <menuitem><a href="capabilities.html">Changelog</a></menuitem>
+    <menuitem><a href="team.html">Team</a></menuitem>
+    <menuitem><img src="images/ffflogo.svg"></menuitem>
+    <menuitem><a href="index.html">Home</a></menuitem>
+    <menuitem><a href="about.html">About</a></menuitem>
+    <menuitem><a href="letswork.html">Let's Work</a></menuitem>
+    <div class="hb">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</nav>
+
+<main class="aboutplant">
+    <div class="bigcard about">
+        <h1>About</h1>
+        <p>All of us here share the same driving, powerful urge to create and adventure. When we have an objective, nothing is going prevent us from going there. This is our dream job. If you have a dream, we will do anything to make it a reality because we know how it feels. </p>
+        <p>Built with <img src="images/GitHub.svg"></p>
+    </div>
+</main>
+
+</body>
+</html>
