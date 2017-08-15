@@ -63,10 +63,9 @@ nav {
 
 nav a {
   margin: 0px 33px;
-  font-family: 'Heebo', sans-serif;
-  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
   font-size: 24px;
-  color: #FD999A;
+  color: #fff;
   position: relative;
   top: -15px;
 }
@@ -79,17 +78,17 @@ nav img {
 
 nav #letsworknav {
   font-family: 'Playfair Display', serif;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 32px;
   padding: 12px 14px 16px 14px;
-  background: #121620;
+  background: #1e1e1e;
   box-shadow: 0 2px 12px 0 rgba(0,0,0,0.50);
 }
 
 .landing {
   width: 100%;
   height: 100vh;
-	background-image: url(Pattern.svg);
+	background-image: url(./assets/Pattern.svg);
 	background-position: 0px 0px;
 	background-repeat: repeat-x;
 	animation: animatedBackground 10s linear infinite;
@@ -100,10 +99,9 @@ nav #letsworknav {
 }
 
 .landing h1 {
-  font-family: 'Heebo', sans-serif;
-  font-weight: 900;
+  font-family: 'Poppins', sans-serif;
   font-size: 160px;
-  color: #FD999A;
+  color: #EB1E25;
   letter-spacing: -0.4px;
   line-height: 200px;
   margin: 0 0 0 100px;
@@ -114,24 +112,23 @@ nav #letsworknav {
 
 .currentlovecube {
   position: absolute;
-  font-family: 'Heebo', sans-serif;
-  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
   font-size: 30px;
   padding: 15px 100px 15px 15px;
   right: 35px;
   bottom: 65px;
-  background: #121620;
+  background: #2d2d2d;
   box-shadow: 0 2px 12px 0 rgba(0,0,0,0.50);
   z-index: 2;
 }
 .currentlovecube a, .currentlovecube:visited a {
-	color: #FD999A !important;
+	color: #fff !important;
 }
 .currentlovebottom {
   font-family: 'Playfair Display', serif;
-  font-weight: 700;
+  font-weight: 500;
   font-style: italic;
-  color: #FEC8C9;
+  color: #fff;
   font-size: 50px;
   position: absolute;
   bottom: 40px;
@@ -143,7 +140,7 @@ nav #letsworknav {
 .mission {
   font-family: 'Playfair Display', serif;
   font-weight: 700;
-  color: #FD999A;
+  color: #EB1E25;
   margin: 0 50px 0 100px;
   padding: 70px;
   line-height: 65px;
@@ -171,13 +168,14 @@ nav #letsworknav {
 
 #work h2 {
   font-size: 36px;
-  color: #FD999A;
+  color: #EB1E25;
   text-align: center;
-  margin-bottom: 36px;
+  margin-bottom: 18px;
+	padding-bottom: 18px;
 }
 
 .websitework {
-  border-left: 3px #FEC8C9 solid;
+  border-left: 3px #202636 solid;
   position: relative;
   margin-bottom: 10px;
 	background: #fff;
@@ -194,7 +192,7 @@ nav #letsworknav {
 .websiteworkimg img {
   margin-left: 25px;
   width: 100%;
-  border: 1px solid #FEC8C9;
+  border: 1px solid #202636;
 }
 .websiteworkimg:hover {
   /*Add hover that has arrow for link*/
@@ -206,26 +204,33 @@ nav #letsworknav {
 }
 
 h3 {
-  font-family: 'Heebo', sans-serif;
-  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
   font-size: 20px;
   margin: 8px 0;
 }
 
+hr {
+	display: block;
+	height: 3px;
+	width: 100%;
+	background: #202636;
+	border: 0;
+}
+
 h4 {
-  font-family: 'Heebo', sans-serif;
-  font-weight: 400;
+  font-family: 'Poppins', sans-serif;
   font-size: 20px;
   line-height: 24px;
   margin: 0 0 20px 0;
+	color: #202636;
 }
 
-.clients {
+#clients {
   font-family: 'Playfair Display', serif;
   font-weight: 700;
   font-size: 36px;
   text-align: center;
-  color: #FD999A;
+  color: #EB1E25;
   margin: 20px 100px 0 50px;
   display: inline-block;
   box-shadow: 0 2px 12px 0 rgba(0,0,0,0.50);
@@ -235,12 +240,9 @@ h4 {
 	background: #fff;
 }
 
-.clients img {
+#clients img {
   width: 100%;
-  display: block;
-}
-
-.clients img:first-of-type {
+	display: block;
   margin-top: 36px;
 }
 
@@ -252,14 +254,23 @@ h4 {
 
 .bottomnav {
   font-family: 'Playfair Display', serif;
-  font-weight: 700;
-  color: #FD999A;
+  font-weight: 400;
+  color: #202636;
   font-size: 40px;
   margin: 50px 100px;
-  padding: 70px;
+  padding: 36px 70px 70px 70px;
   box-shadow: 0 2px 12px 0 rgba(0,0,0,0.50);
 	text-align: center;
 	background: #fff;
+}
+
+h6 {
+	font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 36px;
+  text-align: center;
+  color: #EB1E25;
+	margin-bottom: 36px
 }
 
 footer {
@@ -267,15 +278,14 @@ footer {
   width: 100%;
   background: #131620;
   padding: 75px 100px;
-	color: #FEC8C9;
+	color: #818181;
 	position: relative;
 }
 
 footer p {
   font-size: 18px;
   line-height: 28px;
-  font-family: 'Heebo', sans-serif;
-  font-weight: 500;
+  font-family: 'Poppins', sans-serif;
 }
 
 footer p a {
@@ -308,7 +318,7 @@ footer h5 span {
 body {
   width: 100%;
   height: 100%;
-	background-image: url(Pattern2.svg);
+	background-image: url(./assets/Pattern2.svg);
 	background-position: 0px 0px;
 	background-repeat: repeat-x;
 	animation: animatedBackground2 60s linear infinite;
@@ -333,7 +343,7 @@ section {
 .about {
 	width: 100vw;
   height: 100vh;
-	background-image: url(Pattern.svg);
+	background-image: url(./assets/Pattern.svg);
 	background-position: 0px 0px;
 	background-repeat: repeat-x;
 	animation: animatedBackground2 20s linear infinite;
@@ -356,17 +366,16 @@ section {
 	font-family: 'Playfair Display', serif;
   font-weight: 700;
   font-size: 30px;
-	color: #FD999A;
+	color: #E63B3C;
 	text-align: center;
 	margin: 20px 0;
 }
 
 .about p {
-	font-family: 'Heebo', sans-serif;
-	font-weight: 400;
+	font-family: 'Poppins', sans-serif;
 	font-size: 20px;
 	margin: 8px 0;
-	color: #FD999A;
+	color: #EB1E25;
 	margin: 0 20px;
 	text-align: center;
 }
@@ -381,6 +390,7 @@ section {
 
 	.opennav {
 		height: 100vh;
+		background: #1f1f1f
 	}
 
 	nav a {
@@ -399,7 +409,7 @@ section {
 	.clearfloat:first-of-type {
 		display: none;
 	}
-	.clients {
+	#clients {
 		display: none;
 	}
 
@@ -500,7 +510,7 @@ section {
 	  position: absolute;
 	  height: 5px;
 	  width: 70%;
-	  background: #FD999A;
+	  background: #EB1E25;
 	  opacity: 1;
 	  left: 0;
 	  -webkit-transform: rotate(0deg);
@@ -549,5 +559,11 @@ section {
 	footer {
 		padding: 30px 30px 50px 30px;
 		height: auto;
+	}
+}
+
+@media (max-width: 340px) {
+	h1 {
+		font-size: 68px !important;
 	}
 }

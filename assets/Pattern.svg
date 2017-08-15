@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="2560px" height="700px" viewBox="0 0 2560 700" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="background: #202636;">
+    <!-- Generator: Sketch 44.1 (41455) - http://www.bohemiancoding.com/sketch -->
+    <title>Pattern</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Pattern">
+            <g transform="translate(76.000000, 134.000000)">
+                <rect id="Rectangle-7" fill="#2A3144" x="211" y="270" width="300" height="20"></rect>
+                <rect id="Rectangle-7" fill="#2A3144" x="300" y="56" width="300" height="20"></rect>
+                <rect id="Rectangle-7" fill="#2A3144" x="1104" y="290" width="300" height="20"></rect>
+                <rect id="Rectangle-7" fill="#2A3144" x="604" y="450" width="300" height="20"></rect>
+                <rect id="Rectangle-7" fill="#2A3144" x="686" y="196" width="300" height="20"></rect>
+                <rect id="Rectangle-7" fill="#2A3144" x="0" y="0" width="300" height="20"></rect>
+                <circle id="Oval-2" fill="#2A3144" cx="613" cy="293" r="13"></circle>
+                <circle id="Oval-2" fill="#2A3144" cx="886" cy="502" r="13"></circle>
+                <circle id="Oval-2" fill="#2A3144" cx="286" cy="442" r="13"></circle>
+                <circle id="Oval-2" fill="#2A3144" cx="87" cy="528" r="13"></circle>
+                <circle id="Oval-2" fill="#2A3144" cx="1117" cy="257" r="13"></circle>
+                <circle id="Oval-2" fill="#2A3144" cx="1139" cy="26" r="13"></circle>
+            </g>
+            <g transform="translate(-227.000000, 134.000000)">
+                <rect id="Rectangle-7" fill="#2A3144" x="1995.93919" y="270" width="302.027027" height="20"></rect>
+                <rect id="Rectangle-7" fill="#2A3144" x="2085.54054" y="56" width="302.027027" height="20"></rect>
+                <rect id="Rectangle-7" fill="#2A3144" x="2580" y="192" width="302.027027" height="20"></rect>
+                <rect id="Rectangle-7" fill="#2A3144" x="0" y="192" width="302.027027" height="20"></rect>
+                <rect id="Rectangle-7" fill="#2A3144" x="1783.51351" y="0" width="302.027027" height="20"></rect>
+                <ellipse id="Oval-2" fill="#2A3144" cx="2400.65541" cy="293" rx="13.0878378" ry="13"></ellipse>
+                <ellipse id="Oval-2" fill="#2A3144" cx="1800.65541" cy="143" rx="13.0878378" ry="13"></ellipse>
+                <ellipse id="Oval-2" fill="#2A3144" cx="2675.5" cy="502" rx="13.0878378" ry="13"></ellipse>
+                <ellipse id="Oval-2" fill="#2A3144" cx="1871.10135" cy="528" rx="13.0878378" ry="13"></ellipse>
+            </g>
+        </g>
+    </g>
+</svg>
