@@ -4,92 +4,68 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,700|Poppins" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-  <title>Mateo | Home</title>
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet">
+  <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.js'></script>
+  <script src="okshadow.js"></script>
   <script>
-  $(document).ready(function(){
-  	$('#navicon').click(function(){
-  		$(this).toggleClass('open');
-      $("nav").toggleClass( "opennav");
-    });
-    $('a').click(function(){
-      $("nav").toggleClass( "opennav");
-    })
+  $(function(){
+      // $('.nav').okshadow({
+      //   color: 'rgba(15,81,186,.1)',
+      //   xMax: 6,
+      //   yMax: 10,
+      //   fuzzMax: 0,
+      //   yFactor: 25,
+      //   xFactor: 28,
+      //   yOffset: 1,
+      //   xOffset: 2,
+      // });
+
+      $('.nav').okshadow({
+        color: 'rgba(0,0,0,.3)',
+        xMax: 16,
+        yMax: 16,
+        fuzzMax: 1000,
+        yFactor: 20,
+        xFactor: 20,
+        fuzzMin: 20,
+      });
+
+      $(".x").click(function(){
+        $(".notification").fadeOut();
+      });
+  });
+  $(document).ready(function() {
+    $('body').css('display', 'none');
+    $('body').fadeIn(1000);
   });
   </script>
+  <script>
+  function slideshow() {
+      document.getElementById('slideshow').src = 'slideshow.html';
+  }
+  function work() {
+      document.getElementById('slideshow').src = 'work.html';
+  }
+  function about() {
+      document.getElementById('slideshow').src = 'about.html';
+  }
+  </script>
+  <title>Mateo CF</title>
 </head>
 <body>
-  <nav>
-    <img class="navlogo" src="./assets/mlogo.svg">
-    <a href="#landing" id="homehref">Home</a>
-    <a href="#work">Work</a>
-    <a href="#about">About</a>
-    <a id="letsworknav" href="#letswork">Let's Work</a>
-    <div id="navicon">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-  </nav>
-
-  <div class="landing" id="landing">
-    <h1>Love <span>Your</span> Website</h1>
-    <div class="currentlovecube">
-      <a href="http://lp.anzi.kr" target="_blank" class="currentlovetext" >lp.anzi.kr</a>
-    </div>
-    <span class="currentlovebottom">Current Love</span>
+  <img src="mlogo000.svg" alt="mlogo" id="mlogo">
+  <div class="nav">
+      <div class="thirdcontainer" id="home"><a id="homethird" class="third" onClick="slideshow()"><img id="homeimg" src="home.svg"></a></div>
+      <div class="thirdcontainer" id="about"><a id="aboutthird" class="third" onClick="about()"><img id="aboutimg" src="about.svg"></a></div>
+      <div class="thirdmask">
+        <div class="thirdcontainer" id="hiddenwork" onClick="work()"></div>
+      </div>
   </div>
-
-  <div id="clients">
-    Clients
+  <iframe id="slideshow" src="slideshow.html" scrolling="yes"></iframe>
+  <div class="notification">
+    <img class="x" src="x.svg">
+    <p>Hey! We're still in beta and under construction! Some extra <span>glitches</span> features may be present!<p>
   </div>
-
-  <div class="mission">Thoughtful. Effective. Design.</div>
-
-  <div id="work">
-    <h2>Work</h2>
-  </div>
-
-  <div class="clearfloat"></div>
-
-  <div class="bottomnav" id="about">
-  <span id="letswork"></span>
-    <h6>About</h6>
-    <p>We are a traditional digital creative group that designs and develops web apps and branding for startups</p><br>
-    <p>Currently not available for hire.<br> Website Under Construction</p>
-  </div>
-
-  <footer>
-    <p>
-      Last Updated 8/14/2017<br>
-      <a href="#landing">Home</a><br>
-      <a href="#work">Work</a><br>
-      <a href="#about">About</a><br>
-      <a href="mailto:.?Subject=Sorry%2C%20email%20is%20not%20ready.%20">Contact</a><br>
-    </p>
-    <h5>Made with <span>😍</span> -Mateo</h5>
-    <img class="footerlogo" src="./assets/mlogo.svg">
-  </footer>
-
 </body>
-<script src="./posts.js"></script>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!---->
