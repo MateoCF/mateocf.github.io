@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      html, body, div, span, applet, object, iframe,
+      h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+      a, abbr, acronym, address, big, cite, code,
+      del, dfn, em, img, ins, kbd, q, s, samp,
+      small, strike, strong, sub, sup, tt, var,
+      b, u, i, center,
+      dl, dt, dd, ol, ul, li,
+      fieldset, form, label, legend,
+      table, caption, tbody, tfoot, thead, tr, th, td,
+      article, aside, canvas, details, embed,
+      figure, figcaption, footer, header, hgroup,
+      menu, nav, output, ruby, section, summary,
+      time, mark, audio, video {
+      	margin: 0;
+      	padding: 0;
+      	border: 0;
+      	font-size: 100%;
+      	font: inherit;
+      	vertical-align: baseline;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+      }
+      /* HTML5 display-role reset for older browsers */
+      article, aside, details, figcaption, figure,
+      footer, header, hgroup, menu, nav, section {
+      	display: block;
+      }
+      body {
+      	line-height: 1;
+      	font-family: 'Roboto', sans-serif;
+      	color: #fff;
+      }
+      ol, ul {
+      	list-style: none;
+      }
+      blockquote, q {
+      	quotes: none;
+      }
+      blockquote:before, blockquote:after,
+      q:before, q:after {
+      	content: '';
+      	content: none;
+      }
+      table {
+      	border-collapse: collapse;
+      	border-spacing: 0;
+      }
+      /**/
+
+      hr {
+          border: 0;
+          height: 1px;
+          background: #4c4c4c;
+      }
+
+      #welcomebody {
+        animation: animatedBackground 20s linear infinite;
+      	background-image: url(/images/pattern.svg);
+      	background-position: 0px 0px;
+      	background-repeat: repeat-x;
+      	background-color: transparent;
+      	animation: animatedBackground 20s linear infinite;
+      	height: 100vh;
+      }
+
+      @keyframes animatedBackground {
+      	from { background-position: 0 0; }
+      	to { background-position: 100% 0; }
+      }
+
+      #welcome {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 300px;
+        height: 300px;
+        font-size: 30px;
+        text-align: center;
+        background: #fff;
+        color: #4c4c4c;
+        border-radius: 18px;
+        padding: 20px;
+      }
+
+      #votingbox {
+        height: 100vh;
+        width: 100vw;
+      }
+
+      #amtOfVotes {
+        position: absolute;
+        font-size: 15px;
+        top: 12px;
+        right: 2%;
+      }
+
+      #pollquestion {
+        font-size: 26px;
+        position: absolute;
+        top: 8%;
+        width: 100%;
+        word-wrap: break-word;
+        text-align: center;
+        color: #fff;
+      }
+
+      .votingOption {
+        height: 39.63%;
+        width: 45%;
+        position: absolute;
+        float: right;
+        background: blue;
+        border-radius: 9px;
+        font-size: 18px;
+        overflow: hidden;
+        color: #000;
+        cursor: pointer;
+      }
+
+      .polldesc {
+        text-align: center;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        background: #fff;
+        line-height: 20px;
+        padding: 4px 0;
+        z-index: 2;
+      }
+
+      .score {
+        width: 100%;
+        z-index: 1;
+        height: 0px;
+        background: rgba(255, 255, 255, .3);
+        position: absolute;
+        bottom: 0;
+        display: flex;
+        justify-content: center; /* align horizontal */
+        align-items: center; /* align vertical */
+        color: #fff;
+        -webkit-transition: height .4s ease-in-out;
+        -moz-transition: height .4s ease-in-out;
+        -o-transition: height .4s ease-in-out;
+        transition: height .4s ease-in-out;
+      }
+
+      .selectborder {
+        border: 5px solid white;
+      }
+
+      #option1 {
+        bottom: calc( 3.6% + 39.63%);
+        left: calc( 10% / 3 );
+      }
+
+      #option2 {
+        bottom: calc( 3.6% + 39.63%);
+        right: calc( 10% / 3 );
+      }
+
+      #option3 {
+        bottom: calc( 2% );
+        left: calc( 10% / 3 );
+      }
+
+      #option4 {
+        bottom: calc( 2% );
+        right: calc( 10% / 3 );
+      }
+
+      #createpollbox {
+        position: absolute;
+        top: 10%;
+        left: 50%;
+        transform: translate(-50%, 0);
+        width: 300px;
+        min-height: 300px;
+        font-size: 30px;
+        text-align: center;
+        background: #fff;
+        color: #4c4c4c;
+        border-radius: 18px;
+        padding: 20px;
+        line-height: 30px;
+      }
+
+      input {
+        border: 1px solid #4c4c4c;
+        font-size: 20px;
+      }
+
+      label {
+        text-align: left;
+        font-size: 16px;
+        display: block;
+      }
+
+      input[type="submit"] {
+        border-radius: 8px;
+        border: 0;
+        font-size: 18px;
+        padding: 10px 20px;
+        cursor: pointer;
+      }
+
+      #indexlogo {
+        height: 100px;
+        margin-bottom: 20px;
+      }
+
+      #logo {
+        position: absolute;
+        height: 50px;
+        top: 20px;
+        left: 20px;
+      }
+
+      #aboutlink {
+        position: relative;
+        top: -12px;
+        text-align: center;
+      }
+    </style>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:700" rel="stylesheet">
+    <title>Pollsc</title>
+</head>
+<body>
+  <div id="votingbox">
+    <div id="amtOfVotes"></div>
+    <div id="pollquestion">Example Question</div>
+    <div class="votingOption" id="option1"><div class="score" id="score1"></div><div class="polldesc" id="desc1">Option 1</div></div>
+    <div class="votingOption" id="option2"><div class="score" id="score2"></div><div class="polldesc" id="desc2">Option 2</div></div>
+    <div class="votingOption" id="option3"><div class="score" id="score3"></div><div class="polldesc" id="desc3">Option 3</div></div>
+    <div class="votingOption" id="option4"><div class="score" id="score4"></div><div class="polldesc" id="desc4">Option 4</div></div>
+</div>
+<script>
+    if(document.getElementById('desc1').innerHTML == '') {
+        document.getElementById('option1').style.display = "none"
+    }
+    if(document.getElementById('desc2').innerHTML == '') {
+        document.getElementById('option2').style.display = "none"
+    }
+    if(document.getElementById('desc3').innerHTML == '') {
+        document.getElementById('option3').style.display = "none"
+    }
+    if(document.getElementById('desc4').innerHTML == '') {
+        document.getElementById('option4').style.display = "none"
+    }
+
+
+        document.getElementById('option1').style.background = '#1B9DFC'
+        document.getElementById('option2').style.background = '#1B9DFC'
+        document.getElementById('option3').style.background = '#1B9DFC'
+        document.getElementById('option4').style.background = '#1B9DFC'
+
+</script>
+</body>
+<script>
+
+//Initialize Variables
+var option1 = document.getElementById('option1'),
+    option2 = document.getElementById('option2'),
+    option3 = document.getElementById('option3'),
+    option4 = document.getElementById('option4'),
+    score1 = document.getElementById('score1'),
+    score2 = document.getElementById('score2'),
+    score3 = document.getElementById('score3'),
+    score4 = document.getElementById('score4'),
+    votesbox = document.getElementById('amtOfVotes');
+
+    //Emit Events
+    option1.addEventListener('click', function() {
+        option1.style.pointerEvents = "none";
+        option2.style.pointerEvents = "none";
+        option3.style.pointerEvents = "none";
+        option4.style.pointerEvents = "none";
+        score1.style.fontSize = "24px";
+        option1.classList.add("selectborder");
+
+        fakeData();
+
+    });
+
+    option2.addEventListener('click', function() {
+        option1.style.pointerEvents = "none";
+        option2.style.pointerEvents = "none";
+        option3.style.pointerEvents = "none";
+        option4.style.pointerEvents = "none";
+        score2.style.fontSize = "24px";
+        option2.classList.add("selectborder");
+
+        fakeData();
+
+    });
+
+    option3.addEventListener('click', function() {
+        option1.style.pointerEvents = "none";
+        option2.style.pointerEvents = "none";
+        option3.style.pointerEvents = "none";
+        option4.style.pointerEvents = "none";
+        score3.style.fontSize = "24px";
+        option3.classList.add("selectborder");
+
+        fakeData();
+
+    });
+
+    option4.addEventListener('click', function() {
+        option1.style.pointerEvents = "none";
+        option2.style.pointerEvents = "none";
+        option3.style.pointerEvents = "none";
+        option4.style.pointerEvents = "none";
+        score4.style.fontSize = "24px";
+
+        option4.classList.add("selectborder");
+        fakeData();
+    });
+
+    //Listen for Events
+
+    function fakeData () {
+        var data = {
+          totalvotes: 20,
+          optionsPercent: [25, 50, 15, 10]
+        };
+
+        votesbox.innerHTML = data.totalvotes + " votes"
+
+        score1.style.height = data.optionsPercent[0] + "%";
+        score1.style.bottom = "28px";
+        score1.innerHTML = data.optionsPercent[0] + "%";
+
+        score2.style.height = data.optionsPercent[1] + "%";
+        score2.style.bottom = "28px";
+        score2.innerHTML = data.optionsPercent[1] + "%";
+
+        score3.style.height = data.optionsPercent[2] + "%";
+        score3.style.bottom = "28px";
+        score3.innerHTML = data.optionsPercent[2] + "%";
+
+        score4.style.height = data.optionsPercent[3] + "%";
+        score4.style.bottom = "28px";
+        score4.innerHTML = data.optionsPercent[3] + "%";
+    }
+
+    //Functions
+
+    var rgb = [255, 0, 0];
+
+// randomly change to showcase updates
+
+function setContrast() {
+  // randomly update
+  rgb[0] = Math.round(Math.random() * 255);
+  rgb[1] = Math.round(Math.random() * 255);
+  rgb[2] = Math.round(Math.random() * 255);
+
+  // http://www.w3.org/TR/AERT#color-contrast
+  var o = Math.round(((parseInt(rgb[0]) * 299) +
+                      (parseInt(rgb[1]) * 587) +
+                      (parseInt(rgb[2]) * 114)) / 1000);
+  var fore = (o > 125) ? 'black' : 'white';
+  var back = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
+  document.getElementById('pollquestion').style.color = fore;
+  document.getElementById('amtOfVotes').style.color = fore;
+  document.getElementById('votingbox').style.backgroundColor = back;
+
+}
+
+setContrast();
+
+</script>
+</html>
