@@ -4,9 +4,9 @@ function toggleCards(currentElem) {
 
     console.log("Expand card selection");
     document.querySelectorAll(".card").forEach(element => {
-        element.style.marginBottom = "20px";
+        element.classList.add("cardExpanded");
     });
 
     console.log("Effectively decrease top margin");
-    document.querySelector("#center").style.top = "20%";
+    document.querySelector("#center").style.top = "5%";
 }
