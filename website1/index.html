@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>M Digital Services</title>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+	<style>
+	@import url("https://fonts.googleapis.com/css?family=Roboto:100i,300,400,900,900i");
+a, abbr, acronym, address, applet, article, aside, audio, b, big, blockquote, body, canvas, caption, center, cite, code, dd, del, details, dfn, div, dl, dt, em, embed, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, html, i, iframe, img, ins, kbd, label, legend, li, mark, menu, nav, object, ol, output, p, pre, q, ruby, s, samp, section, small, span, strike, strong, sub, summary, sup, table, tbody, td, tfoot, th, thead, time, tr, tt, u, ul, var, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  vertical-align: baseline;
+  text-decoration: none;
+  color: inherit;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:after, blockquote:before, q:after, q:before {
+  content: '';
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #E9E9E9;
+}
+html *,
+body * {
+  font-family: 'Roboto', sans-serif;
+}
+
+#notablet {
+  display: none;
+}
+@media (max-width: 1200px) and (min-width: 425px) {
+  #notablet {
+    display: block;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    padding: 175px 30% 0 30%;
+    background: #8AAA89;
+    z-index: 10;
+    font-size: 30px;
+    font-weight: 900;
+    text-align: center;
+    line-height: 38px;
+    color: whitesmoke;
+  }
+}
+
+#mds {
+  position: fixed;
+  z-index: 5;
+  transform: rotate(-90deg);
+  left: -60px;
+  top: calc( 50vh - 20px);
+  display: inline-block;
+  color: #9D9D9D;
+  font-size: 20px;
+}
+#mds img {
+  height: 16px;
+}
+@media (max-width: 1200px) {
+  #mds {
+    left: -70px;
+  }
+}
+
+nav {
+  z-index: 5;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.05);
+  display: block;
+  width: 100%;
+  color: white;
+  padding: 20px 0;
+  text-align: center;
+  transition: .3s;
+}
+@media (max-width: 1200px) {
+  nav {
+    height: 90px;
+    text-align: left;
+  }
+}
+nav .hb {
+  position: absolute;
+  height: 34px;
+  width: 45px;
+  top: 28px;
+  right: 30px;
+  cursor: pointer;
+  transform: rotate(0deg);
+  transition: .5s ease-in-out;
+  cursor: pointer;
+}
+@media (min-width: 1200px) {
+  nav .hb {
+    display: none;
+  }
+}
+nav .hb span {
+  display: block;
+  position: absolute;
+  height: 5px;
+  width: 100%;
+  background: #fff;
+  left: 0;
+  transform: rotate(0deg);
+  transition: .25s ease-in-out;
+}
+nav .hb span:nth-child(1) {
+  top: -1px;
+}
+nav .hb span:nth-child(2),
+nav .hb span:nth-child(3) {
+  top: 12px;
+}
+nav .hb span:nth-child(4) {
+  top: 25px;
+}
+nav .hb.open span:nth-child(1) {
+  top: 18px;
+  width: 0%;
+  left: 50%;
+}
+nav .hb.open span:nth-child(2) {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+nav .hb.open span:nth-child(3) {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+nav .hb.open span:nth-child(4) {
+  top: 18px;
+  width: 0%;
+  left: 50%;
+}
+nav menuitem {
+  position: relative;
+  font-weight: 300;
+  font-size: 20px;
+  margin: 0 30px;
+  cursor: pointer;
+  color: white;
+  text-decoration: none;
+}
+@media (max-width: 1200px) {
+  nav menuitem {
+    display: block;
+    font-size: 200%;
+  }
+}
+nav menuitem a {
+  color: white;
+  text-decoration: none;
+}
+nav menuitem a:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #8AAA89;
+  visibility: hidden;
+  transform: scaleX(0);
+  transition: all 0.15s ease-in-out 0s;
+}
+nav menuitem a:hover:before {
+  visibility: visible;
+  -webkit-transform: scaleX(1);
+  transform: scaleX(1);
+}
+nav menuitem img {
+  height: 48px;
+  vertical-align: middle;
+}
+@media (max-width: 1200px) {
+  nav menuitem:nth-child(4) {
+    position: absolute;
+    top: 20px;
+    left: 0;
+  }
+  nav menuitem:not(:nth-child(4)) {
+    margin: 10px 30px;
+  }
+  nav menuitem:nth-child(1) {
+    margin-top: 100px;
+  }
+}
+nav menuitem:nth-child(7) {
+  border-bottom: 2px solid #8AAA89;
+  display: inline-block;
+}
+
+@media (min-width: 1200px) {
+  nav:hover {
+    background: rgba(0, 0, 0, 0.75);
+  }
+}
+@media (max-width: 1200px) {
+  .mini menuitem:not(:nth-child(4)) {
+    visibility: hidden;
+  }
+}
+
+.navexpanded {
+  background: rgba(0, 0, 0, 0.85);
+}
+@media (max-width: 1200px) {
+  .navexpanded {
+    height: 100vh;
+  }
+}
+.navexpanded menuitem {
+  visibility: visible;
+}
+
+.intro {
+  position: relative;
+  z-index: 3;
+  height: 100vh;
+  width: 100%;
+  background: url("crisp.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+@media (max-width: 1200px) {
+  .intro {
+    background: url("mcrisp.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+  }
+}
+
+#windowcontainer {
+  position: fixed;
+  z-index: 2;
+  width: calc((100% - 100px )/ 3);
+  height: 100%;
+  top: 0;
+  right: calc(50px);
+  transform: translate(0, -7vh);
+}
+@media (max-width: 1200px) {
+  #windowcontainer {
+    display: none;
+  }
+}
+#windowcontainer .window {
+  height: 52vh;
+  width: 90%;
+  position: absolute;
+  z-index: inherit;
+  top: 50%;
+  left: 5%;
+  transform: translateY(-50%);
+  background: #ECECEC;
+  box-shadow: 0 0 1px 0 rgba(0, 0, 0, 0.9), 0 20px 30px 0 rgba(0, 0, 0, 0.3), 0 10px 50px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+#windowcontainer .window .windownav {
+  background-image: linear-gradient(-180deg, #E7E6E7 0%, #D1D0D1 100%);
+  box-shadow: inset 0 0 0 0 rgba(255, 255, 255, 0.6), inset 0 0 0 0 rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid #BCBCBC;
+  border-radius: 5px 5px 0 0;
+  height: 22px;
+  padding: 4px 0 0 0;
+}
+#windowcontainer .window .windownav .windowbutton {
+  display: inline-block;
+  border-radius: 50%;
+  height: 12px;
+  width: 12px;
+  margin-left: 8px;
+}
+#windowcontainer .window .windownav .windowbutton:nth-child(1) {
+  background: #FF5F58;
+  border: 1px solid #E1483F;
+}
+#windowcontainer .window .windownav .windowbutton:nth-child(2) {
+  background: #FFBE2F;
+  border: 1px solid #E0A028;
+}
+#windowcontainer .window .windownav .windowbutton:nth-child(3) {
+  background: #2AC940;
+  border: 1px solid #2BAC2D;
+}
+#windowcontainer .window .message {
+  text-align: center;
+  color: #333;
+  height: 100%;
+  width: 100%;
+}
+#windowcontainer .window .message .messagecontainer {
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  padding: 18px;
+}
+#windowcontainer .window .message .messagecontainer h3 {
+  border-radius: 5px;
+  border: 2px solid #9EB79D;
+  box-shadow: 0px 2px 0px 1px #7e927d;
+  display: block;
+  font-size: 20px;
+  line-height: 25px;
+  padding: 15px 10px;
+}
+#windowcontainer .window .message .messagecontainer h3 p {
+  display: inherit;
+  font-weight: 100;
+  font-size: 16px;
+}
+#windowcontainer .window img {
+  height: 60px;
+  margin: 0 auto;
+  display: block;
+}
+
+main {
+  width: 100%;
+  padding: 0 50px 140px 50px;
+}
+@media (max-width: 1200px) {
+  main {
+    padding: 0 30px 140px 30px;
+  }
+}
+main #miniabout {
+  background: #fff;
+  position: relative;
+  z-index: 4;
+  width: 100%;
+  transform: translateY(-60px);
+  height: 200px;
+  border-bottom: 1px solid #BCBCBC;
+  padding: 60px 60px 50px 60px;
+  font-weight: 100;
+  font-style: italic;
+  color: #9D9D9D;
+  font-size: 20px;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.5);
+  margin-bottom: 10px;
+}
+@media (max-width: 1200px) {
+  main #miniabout {
+    padding: 30px 20px 20px 20px;
+  }
+}
+main #miniabout h1 {
+  display: inline-block;
+  width: calc(100% - 500px);
+  transform: translate(20px, 15px);
+  line-height: 26px;
+}
+main #miniabout img {
+  height: 80px;
+  float: left;
+}
+main #miniabout #hundred {
+  float: right;
+}
+@media (max-width: 1200px) {
+  main #miniabout {
+    height: 320px;
+  }
+  main #miniabout img:nth-child(1) {
+    width: 67%;
+  }
+  main #miniabout img:nth-child(2) {
+    width: 11%;
+  }
+  main #miniabout img:nth-child(3) {
+    width: 21%;
+  }
+  main #miniabout h1 {
+    font-size: 18px;
+    width: 100%;
+    transform: none;
+    text-align: center;
+  }
+  main #miniabout #hundred {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+main #miniabout:after {
+  background-color: #fff;
+  height: 10px;
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  right: 0;
+  box-shadow: 0 1px 0 0 #979797;
+}
+main .bigcard {
+  position: relative;
+  z-index: 1;
+  transform: translateY(-60px);
+  background: white;
+  width: 100%;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.5);
+}
+main .bigcard #left2third {
+  width: calc(100% / 3 * 2 - 1px);
+  height: calc(100%);
+  display: inline-block;
+  border-right: 1px solid #979797;
+}
+@media (max-width: 1200px) {
+  main .bigcard #left2third {
+    width: 100%;
+  }
+}
+main .bigcard #left2third #clients {
+  height: 300px;
+  width: 100%;
+  background: #F7F7F7;
+  box-shadow: 0 1px 0 0 #979797;
+  font-size: 20px;
+  color: #808080;
+  padding: 30px;
+  text-align: center;
+}
+main .bigcard #left2third #clients #clientborder {
+  margin: 0 auto;
+  display: inline;
+}
+main .bigcard #left2third #clients #clientborder h2 {
+  font-weight: 100;
+  color: #808080;
+  text-align: center;
+  display: inline;
+  border-bottom: 1px solid #808080;
+}
+main .bigcard #left2third #clients p {
+  margin-top: 70px;
+}
+@media (max-width: 1200px) {
+  main .bigcard #left2third #clients p {
+    font-size: 16px;
+  }
+}
+main .bigcard #left2third h4 {
+  text-align: center;
+  font-size: 55px;
+  line-height: 65px;
+  font-weight: 900;
+  margin: 40px auto;
+  color: #909090;
+}
+main .bigcard #left2third h4 i {
+  font-style: italic;
+}
+@media (max-width: 1200px) {
+  main .bigcard #left2third h4 {
+    font-size: 28px;
+    line-height: 36px;
+  }
+}
+main .bigcard #left2third #workslider {
+  border-top: 1px solid #979797;
+  border-bottom: 1px solid #979797;
+  text-align: center;
+  width: 100%;
+  overflow: hidden;
+  padding: 10px;
+  background: #F7F7F7;
+}
+main .bigcard #left2third #workslider img {
+  max-height: 90%;
+  width: 30%;
+  margin: 0 auto;
+}
+main .bigcard #left2third .buttoncontainer {
+  width: 100%;
+  padding: 50px;
+  font-size: 45px;
+  font-weight: 100;
+  text-align: center;
+}
+@media (max-width: 1200px) {
+  main .bigcard #left2third .buttoncontainer {
+    font-size: 28px;
+  }
+}
+main .bigcard #left2third .buttoncontainer .button {
+  transition: all 0.1s;
+  -webkit-transition: all 0.1s;
+  background: whitecloud;
+  padding: 12px 14px;
+  display: inline-block;
+  border-radius: 5px;
+  border: 2px solid #9EB79D;
+  box-shadow: 0px 4px 0px 1px #7e927d;
+}
+main .bigcard #left2third .buttoncontainer .button:active {
+  box-shadow: none;
+  transform: translateY(4px);
+}
+main .bigcard #right1third {
+  width: calc(100% / 3 * 1);
+  display: inline-block;
+  float: right;
+}
+@media (max-width: 1200px) {
+  main .bigcard #right1third {
+    width: 100%;
+  }
+}
+
+.letsworkplant {
+  background-image: url("plant.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.letsworkplant .letswork {
+  transform: translateY(130px) !important;
+  text-align: center;
+}
+.letsworkplant .letswork h1 {
+  border-bottom: 2px solid #8AAA89;
+  display: inline-block;
+  margin: 30px;
+  color: #7D7D7D;
+  font-weight: 900;
+  font-size: 90px;
+  font-style: italic;
+}
+@media (max-width: 1200px) {
+  .letsworkplant .letswork h1 {
+    font-size: 42px;
+  }
+}
+.letsworkplant .letswork p {
+  display: block;
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 100;
+  margin: 10px 100px;
+  text-align: left;
+}
+@media (max-width: 1200px) {
+  .letsworkplant .letswork p {
+    font-size: 18px;
+    line-height: 25px;
+    margin: 0 20px;
+  }
+}
+.letsworkplant .letswork .field {
+  text-align: left;
+  max-width: 500px;
+  margin: 40px auto;
+  font-size: 20px;
+  font-weight: 400;
+  color: #696969;
+}
+.letsworkplant .letswork .field .fieldquestion {
+  text-align: center;
+  border-bottom: 2px solid #8AAA89;
+  color: #7D7D7D;
+  font-weight: 900;
+  font-size: 30px;
+  font-style: italic;
+  padding-bottom: 10px;
+}
+.letsworkplant .letswork .field input {
+  margin: 20px 20px 0 10px;
+}
+.letsworkplant .letswork #totalbox {
+  font-size: 35px;
+  border-bottom: 2px solid #8AAA89;
+  color: #7D7D7D;
+  font-weight: 900;
+  font-style: italic;
+  display: inline;
+}
+.letsworkplant .letswork #total {
+  font-size: 35px;
+  color: #7D7D7D;
+  font-weight: 900;
+  display: inline;
+  line-height: 70px;
+}
+.letsworkplant .letswork #total:before {
+  content: '$';
+}
+.letsworkplant .letswork .buttoncontainer {
+  width: 100%;
+  padding: 20px 0 50px 0;
+  font-size: 45px;
+  font-weight: 100;
+  text-align: center;
+}
+@media (max-width: 1200px) {
+  .letsworkplant .letswork .buttoncontainer {
+    font-size: 28px;
+  }
+}
+.letsworkplant .letswork .buttoncontainer a {
+  cursor: not-allowed;
+}
+.letsworkplant .letswork .buttoncontainer a .button {
+  transition: all 0.1s;
+  -webkit-transition: all 0.1s;
+  background: whitecloud;
+  padding: 12px 14px;
+  display: inline-block;
+  border-radius: 5px;
+  border: 2px solid #9EB79D;
+  box-shadow: 0px 4px 0px 1px #7e927d;
+}
+.letsworkplant .letswork .buttoncontainer p {
+  margin-top: 20px;
+  color: #7e927d;
+  font-weight: 900;
+  font-style: italic;
+  size: 24px;
+  text-align: center;
+}
+
+	</style>
+</head>
+<body>
+<div id="mds"><img src="gm.svg"> - Digital Services</div>
+<nav class="mini">
+    <menuitem><a href="#">Work</a></menuitem>
+    <menuitem><a>Capabilities</a></menuitem>
+    <menuitem><a>Team</a></menuitem>
+    <menuitem><a href="#"><img src="logo.svg" alt=""></a></menuitem>
+    <menuitem><a>Contact</a></menuitem>
+    <menuitem><a>About</a></menuitem>
+    <menuitem><a href="#">Let's Work</a></menuitem>
+    <div class="hb">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</nav>
+<script>
+$(document).ready(function(){
+    $( ".hb" ).click(function() {
+      $( "nav" ).toggleClass( "navexpanded" );
+      $( "nav" ).toggleClass( "mini" );
+      $( this ).toggleClass('open');
+    });
+    $( "#notablet" ).click(function() {
+        $( this ).hide();
+    });
+});
+
+
+</script>
+<div id="notablet">
+    This website is not optimized for tablet...yet. Click anywhere to continue.
+    <br><br>
+    <img src="logo.svg" alt="">
+</div>
+<div class="intro"></div>
+
+<div id="windowcontainer">
+    <div class="window">
+       <div class="windownav">
+           <div class="windowbutton"></div><!--
+        --><div class="windowbutton"></div><!--
+        --><div class="windowbutton"></div>
+       </div>
+
+        <div class="message">
+            <div class="messagecontainer">
+                <h3>Win - Win
+                    <br>
+                    <p>All of us here share the same driving, powerful urge to create and adventure.
+                    When we have an objective, nothing is going prevent us from going there. This is our dream job. If you have a dream, we will do anything to make it a reality because we know how it feels. </p>
+                </h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<main>
+    <section id="miniabout">
+       <img src="fulllogo.svg" alt="">
+       <img src="Path.svg" alt="">
+       <img src="Mb.svg" alt="">
+       <h1>
+       An innovative, creative, and determined group of people that
+       will make your digital dreams become a realily.
+       </h1>
+       <img id="hundred" src="https://www.emojibase.com/resources/img/emojis/apple/x1f4af.png.pagespeed.ic.XGag47MW_q.png">
+    </section>
+    <div class="bigcard">
+       <section id="left2third">
+           <div id="clients">
+               <span id="clientborder">
+                   <h2>Our Clients</h2>
+               </span>
+               <p>None yet; you could be one!</p>
+           </div>
+           <h4>It’s <i>straightfoward</i>;
+           <br>We <i>fabricate</i> your ideas.</h4>
+           <div id="workslider">
+                <!-- <img src="http://assets.awwwards.com/awards/submissions/2016/12/584163f5da687.jpg"> -->
+           </div>
+           <div class="buttoncontainer">
+               <a href="#"><div class="button">Let's Work</a></div>
+           </div>
+       </section>
+       <section id="right1third">
+       </section>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="352px" height="352px" viewBox="0 0 352 352" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="2.46716228e-15%" y1="50.0008356%" x2="100%" y2="50.0008356%" id="linearGradient-1">
+            <stop stop-color="#08AEEA" offset="0%"></stop>
+            <stop stop-color="#2AF598" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group">
+            <rect id="Rectangle" fill="#000000" x="0" y="0" width="351.113376" height="351.11"></rect>
+            <g id="mlogo000" transform="translate(67.000000, 95.000000)">
+                <path d="M0.508,41.901 C0.508,41.901 35.894,1.944 55.161,3.048 C97.814,5.492 -4.341,149.243 0.508,158.46 C3.558,150.103 9.544,136.369 10.451,134.738 C36.566,87.725 112.872,-19.725 131.551,3.431 C135.419,8.225 46.918,161.16 74.78,160.199 C85.653,159.823 178.48,-21.439 213.833,3.34 C211.37,21.873 119.305,149.265 152.762,160.199 C168.418,165.315 209.634,127.127 215.89,120.484" id="Shape" stroke="#FFFFFF" stroke-width="10.25" stroke-linecap="round" stroke-linejoin="round"></path>
+                <rect id="Rectangle-path" fill="url(#linearGradient-1)" x="0.115" y="62.484" width="216" height="35.904"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

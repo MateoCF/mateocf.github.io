@@ -9,24 +9,58 @@
     <title>Hello!</title>
 </head>
 <body>
-    <!-- Centers cards at screen -->
-    <div id="center">
-        <!-- Upon Click, fan cards out -->
-        <button onclick="toggleCards(this)" id="toggleCardsButton"></button>
-        <div class="card">
-            <img src="./imgs/mockid.png" alt="" srcset="">
+    <header>
+        <img src="./imgs/mockid.png" alt="">
+    </header> 
+    <div id="flexcontainer">
+        <div class="box">
+            <img src="./imgs/mockreceipt.png" onclick="modalOn(this)" alt="">
+            <div class="modal">
+                <button class="modalExitButton" onclick="modalOff(this)">X</button>
+                <h1>Education</h1>
+                <hr>
+            </div>
         </div>
-        <div class="card">
-            <img src="./imgs/mockreceipt.png" alt="" srcset="">
+        <div class="box">
+            <img src="./imgs/mockbusiness.png" onclick="modalOn(this)" alt="">
+            <div class="modal">
+                <button class="modalExitButton" onclick="modalOff(this)">X</button>
+                <h1>Contact Info</h1>
+                <hr>
+            </div>
         </div>
-        <div class="card">
-            <img src="./imgs/mockbusinesscard.png" alt="" srcset="">
+        <div class="box">
+            <img src="./imgs/website1.png" onclick="modalOn(this)" class="digitalcontentimg" alt="">
+            <div class="modal">
+                <button class="modalExitButton" onclick="modalOff(this)">X</button>
+                <h1>Personal Website (Circa 2016)</h1>
+                <hr>
+                This was my first iteration of this website. Linked <a href="./website1/index.html">here</a>.
+            </div>
         </div>
-        <div class="card">
-            <!-- ADD SD card that links to video
-            
-                upon click of any card, pop up a modal 
-            -->
+        <div class="box">
+            <img src="./imgs/mocksd.png" onclick="modalOn(this)" alt="">
+            <div class="modal">
+                <button class="modalExitButton" onclick="modalOff(this)">X</button>
+            </div>
+        </div>
+        <div class="box">
+            <img src="./imgs/website2.png" onclick="modalOn(this)" class="digitalcontentimg" alt="">
+            <div class="modal">
+                <button class="modalExitButton" onclick="modalOff(this)">X</button>
+                <h1>Personal Website (Circa 2017)</h1>
+                <hr>
+                This was my 2nd iteration of this website. Linked <a href="./website2/index.html">here</a>.
+            </div>
+        </div>
+        <div class="box">
+            <img src="./imgs/website3.png" onclick="modalOn(this)" class="digitalcontentimg" alt="">
+            <div class="modal">
+                <button class="modalExitButton" onclick="modalOff(this)">X</button>
+                <h1>Personal Website (Circa 2019)</h1>
+                <hr>
+                This was my 3rd iteration of this website. Linked <a href="./website3/index.html">here</a>.
+            </div>
         </div>
     </div>
 </body>
