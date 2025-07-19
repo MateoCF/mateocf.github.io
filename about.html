@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior: smooth;">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mateo Campoverde-Fordon - Aspiring PhD Candidate</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Basic Reset and Theme Variables */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --text-link: #007bff;
+            --border-color: #dee2e6;
+            --shadow-color: rgba(0, 0, 0, 0.05);
+            --button-bg: #007bff;
+            --button-text: #ffffff;
+            --button-hover-bg: #0056b3;
+            --svg-color: #007bff;
+        }
+
+        .dark-mode {
+            --bg-primary: #212529;
+            --bg-secondary: #343a40;
+            --text-primary: #e9ecef;
+            --text-secondary: #adb5bd;
+            --text-link: #a8d1ff; /* Lighter blue */
+            --border-color: #495057;
+            --shadow-color: rgba(255, 255, 255, 0.05);
+            --button-bg: #a8d1ff; /* Lighter blue */
+            --button-text: #212529;
+            --button-hover-bg: #cce6ff; /* Even lighter blue for hover */
+            --svg-color: #a8d1ff; /* Lighter blue */
+        }
+
+        body, h1, h2, h3, p, ul, li, a {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Container and Layout */
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Left Column: Navigation/Aside */
+        .sidebar {
+            background-color: var(--bg-primary);
+            box-shadow: 0 4px 6px -1px var(--shadow-color);
+            transition: background-color 0.3s;
+        }
+
+        .sidebar-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            min-height: 100%;
+        }
+
+        .profile-img {
+            width: 128px;
+            height: 128px;
+            border-radius: 9999px;
+            border: 4px solid var(--border-color);
+            margin-bottom: 1rem;
+        }
+
+        .sidebar h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .sidebar p {
+            color: var(--text-secondary);
+        }
+        
+        .sidebar .title {
+            font-size: 1rem;
+        }
+        
+        .sidebar .subtitle {
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .sidebar nav {
+            margin-top: 2rem;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            width: 100%;
+        }
+        
+        .sidebar ul li + li {
+            margin-top: 1rem;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .sidebar a:hover {
+            color: var(--text-link);
+        }
+
+        .sidebar svg {
+            width: 20px;
+            height: 20px;
+            margin-right: 0.75rem;
+        }
+        
+        .theme-toggle-button {
+            background: none;
+            border: 1px solid var(--border-color);
+            border-radius: 9999px;
+            cursor: pointer;
+            padding: 0.5rem;
+            margin-top: 2.5rem; /* Spacing from menu */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            align-self: center; /* This centers the button */
+        }
+        
+        .theme-toggle-button:hover {
+            background-color: var(--bg-secondary);
+        }
+        
+        .theme-toggle-button svg {
+            width: 20px;
+            height: 20px;
+            margin: 0;
+        }
+        
+        .dark-mode .theme-toggle-button .sun-icon { display: block; }
+        .dark-mode .theme-toggle-button .moon-icon { display: none; }
+        .theme-toggle-button .sun-icon { display: none; }
+        .theme-toggle-button .moon-icon { display: block; }
+
+        /* Right Column: Main Content */
+        .main-content {
+            padding: 2rem 3rem;
+        }
+
+        section {
+            margin-bottom: 4rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            border-bottom: 4px solid var(--text-link);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .main-content p, .main-content ul {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .main-content ul {
+            list-style-position: inside;
+            list-style-type: disc;
+        }
+        
+        .main-content ul li + li {
+            margin-top: 0.5rem;
+        }
+
+        /* Specific Component Styles */
+        .card {
+            background-color: var(--bg-primary);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 var(--shadow-color);
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--border-color);
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        
+        .card h3 {
+             font-weight: 700;
+             font-size: 1.125rem;
+             color: var(--text-primary);
+             margin-bottom: 0.5rem;
+        }
+
+        .card p {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+        
+        .card a {
+            color: var(--text-link);
+            text-decoration: none;
+            margin-right: 1rem;
+            font-weight: 500;
+        }
+        
+        .card a:hover {
+            text-decoration: underline;
+        }
+
+        .placeholder-card {
+            padding: 1rem;
+            background-color: transparent;
+            border-radius: 0.5rem;
+            border: 2px dashed var(--border-color);
+            text-align: center;
+            color: var(--text-secondary);
+        }
+        
+        .placeholder-card p {
+            margin-bottom: 0; /* Fix for centering */
+        }
+
+        .cv-button {
+            display: inline-block;
+            background-color: var(--button-bg);
+            color: var(--button-text);
+            font-weight: 700;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px -1px var(--shadow-color);
+        }
+
+        .cv-button:hover {
+            background-color: var(--button-hover-bg);
+            box-shadow: 0 10px 15px -3px var(--shadow-color);
+            transform: translateY(-2px);
+        }
+
+        .contact-card {
+            background-color: var(--bg-primary);
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px 0 var(--shadow-color);
+            border: 1px solid var(--border-color);
+        }
+        
+        .contact-card ul {
+            list-style-type: none;
+        }
+
+        .contact-card ul li {
+            display: flex;
+            align-items: center;
+            font-size: 1.125rem;
+        }
+        
+        .contact-card ul li + li {
+            margin-top: 1rem;
+        }
+        
+        .contact-card svg {
+            width: 24px;
+            height: 24px;
+            margin-right: 1rem;
+            color: var(--svg-color);
+        }
+        
+        .contact-card a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+        
+        .contact-card a:hover {
+            color: var(--text-link);
+        }
+
+        /* Desktop and Tablet Styles */
+        @media (min-width: 769px) {
+            .container {
+                flex-direction: row;
+            }
+            .sidebar {
+                width: 25%;
+                position: sticky;
+                top: 0;
+                height: 100vh;
+                overflow-y: auto; /* Fix for potential overflow */
+            }
+            .sidebar-inner {
+                align-items: flex-start;
+                text-align: center;
+            }
+            .sidebar nav {
+                align-items: flex-start;
+            }
+            .main-content {
+                width: 75%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- Left Column: Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-inner">
+                <div>
+                    <img src="./imgs/pfp.jpeg" alt="Mateo CF" class="profile-img">
+                    <h1>Mateo<br>Campoverde-Fordon</h1>
+                    <p class="title">UIUC M.C.S. Student</p>
+                    <p class="subtitle">Aspiring PhD Candidate</p>
+                </div>
+
+                <nav>
+                    <ul>
+                        <li><a href="#about">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                            About Me
+                        </a></li>
+                        <li><a href="#research">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                            Research
+                        </a></li>
+                        <li><a href="#publications">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                            Publications
+                        </a></li>
+                        <li><a href="#creative-projects">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                            Creative Projects
+                        </a></li>
+                        <li><a href="#cv">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                            Curriculum Vitae
+                        </a></li>
+                        <li><a href="#contact">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            Contact
+                        </a></li>
+                    </ul>
+                    <button id="theme-toggle" class="theme-toggle-button" title="Toggle light/dark mode">
+                        <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="size-6"> <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" /> </svg>
+                        <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 004.472-.69a.75.75 0 01.98.98 10.503 10.503 0 01-9.694 6.46c-5.799 0-10.5-4.7-10.5-10.5 0-3.51 1.713-6.634 4.362-8.482a.75.75 0 01.819.162z" clip-rule="evenodd"></path></svg>
+                    </button>
+                </nav>
+            </div>
+        </aside>
+
+        <!-- Right Column: Content -->
+        <main class="main-content">
+            <section id="about">
+                <h2>About Me</h2>
+                <p>
+                    How do we impose our values into and onto emerging technologies? 
+                    How does the redistribution of effort imposed by a tool impact it's usability and utility? 
+                    How do we design technology to balance reflection and utility? 
+                </p>
+                <p>
+                    My name is Mateo and I am a Master's student at the University of Illinois Urbana-Champaign who is interested in these sort of questions. 
+                    My passion for computer science is driven by a fascination of technology and a strong care for others. <!-- , which is why I am currently researching the use of AI in classrooms --> 
+                    Throughout my academic journey, I have developed a strong foundation in cybersecurity, philosophy, and social computing.
+                </p>
+                <p>
+                    My goal is to pursue a Ph.D. in Human-Computer Interaction in the Fall of 2026, where I can further explore how technology can be designed to better serve and empower users. I am particularly interested in reintroducing digital friction in sociotechnical systems, and I am eager to join a research group where I can collaborate on impactful projects.
+                </p>
+            </section>
+
+            <section id="research">
+                <h2>Research Interests</h2>
+                <div>
+                    <h3>Primary Interest: Impacts of Computing on Society</h3>
+                    <p>
+                        My primary research interest is how emerging technologies reshape our values.
+                    </p>
+                </div>
+                <div>
+                    <h3>Secondary Interest: Human-Centered Design</h3>
+                    <p>
+                        I am also deeply interested in how to design technology to better serve and empower users. 
+                    </p>
+                </div>
+                 <!-- <div>
+                    <h3>Past Projects</h3>
+                    <ul>
+                        <li><strong>Teaching Assistantship:</strong> CS498,</li>
+                    </ul>
+                </div> -->
+            </section>
+
+            <section id="publications">
+                <h2>Publications</h2>
+                <div class="card">
+                    <h3>Campoverde-Fordon, M., & Andersen, B. (2023). "Analysis of LoRaWAN and NB-IoT for Critical and Massive Communication"</h3>
+                    <p>In <em>The Seventh International Conference on Safety and Security with IoT (SaSeIoT 2023)</em>.</p>
+                    <!-- <p>bruh</p> -->
+                    <div>
+                        <a href="https://doi.org/10.1007/978-3-031-53028-9_3" target="_blank" rel="noopener noreferrer">[DOI]</a>
+                        <a href="./lorawannbiot.pdf">[PDF]</a>
+                        <!-- <a href="#">[Code]</a> -->
+                    </div>
+                </div>
+                <div class="placeholder-card">
+                   <p>More publications coming soon.</p>
+                </div>
+            </section>
+            
+            <section id="creative-projects">
+                <h2>Creative Projects</h2>
+                <p>
+                    
+                    Outside of my academic research, I enjoy creating digital art and writing that challenges our relationship with technology.
+                </p>
+                <div class="card">
+                    <h3>The Doomscroll Machine</h3>
+                    <p>
+                        In response to descreasing attention spans and the rise of AI, I used AI to create <em>The Doomscroll Machine</em> to demonstrate how easy it is for anyone to exasterbate our problematic relationship with short-form online content. 
+                        This combines philosophical ideas from Marshall McLuhan ("The medium is the message") and emerging AI technologies (Google Gemini). 
+                    </p>
+                    <div>
+                        <a href="https://doomscrollmachine.com" target="_blank" rel="noopener noreferrer">[Live Demo]</a>
+                        <a href="https://github.com/MateoCF/doomscrollmachine" target="_blank" rel="noopener noreferrer">[Code on GitHub]</a>
+                        <a href="https://www.instagram.com/thedoomscrollmachine/" target="_blank" rel="noopener noreferrer">[View on Instagram]</a>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3>The Difficulty Collective</h3>
+                    <p>
+                        The Difficulty Collective is a series of infographics that describes the benefits of friction and noise in communication and cooperation from a sociotechnical perspective. Drawing from biology, architecture, philosophy, and prior computer science research, I explore the counterintuitive results of an incessant push towards efficiency. 
+
+                    </p>
+                    <div>
+                        <a href="https://www.instagram.com/thedifficultycollective/" target="_blank" rel="noopener noreferrer">[View on Instagram]</a>
+                    </div>
+                </div>
+            </section>
+
+            <section id="cv">
+                <h2>Curriculum Vitae (Soon)</h2>
+                <!-- <p>
+                    For a detailed overview of my academic background, technical skills, and experience, please download my CV.
+                </p> -->
+                <a href="#" class="cv-button">
+                    Download CV (PDF)
+                </a>
+            </section>
+
+            <section id="contact">
+                <h2>Contact</h2>
+                <p>
+                    I am actively seeking Ph.D. opportunities for Fall 2026 and am open to discussing potential research collaborations. Please feel free to reach out.
+                </p>
+                <div class="contact-card">
+                    <ul>
+                        <li>
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            <a href="mailto:mateojc2@illinois.edu">mateojc2@illinois.edu</a>
+                        </li>
+                        <li>
+                           <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                              <path clip-rule="evenodd" fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.286 2.553 7.94 6.205 9.385.45.083.615-.195.615-.434 0-.215-.008-.78-.012-1.53-2.478.538-3.001-1.192-3.001-1.192-.41-1.043-1-1.32-1-1.32-.817-.56.062-.055.062-.055.904.063 1.38 1.93 1.38 1.93.803 1.377 2.106.98 2.62.75.082-.583.314-1.98.57-1.206-2.004-.228-4.11-1.002-4.11-4.454 0-.985.35-1.79.925-2.42-.094-.23-.4-1.145.088-2.387 0 0 .758-.243 2.485.925.72-.2 1.49-.3 2.258-.3.768 0 1.538.1 2.258.3 1.727-1.168 2.483-.925 2.483-.925.49 1.242.183 2.157.09 2.387.575.63.924 1.435.924 2.42 0 3.462-2.11 4.224-4.12 4.446.324.28.61.83.61 1.672 0 1.206-.01 2.18-.01 2.476 0 .24.164.522.62.43C19.447 19.94 22 16.286 22 12c0-5.523-4.477-10-10-10Z" />
+                            </svg>
+                            <a href="https://github.com/mateocf" target="_blank" rel="noopener noreferrer">github.com/mateocf</a>
+                        </li>
+                         <!-- <li>
+                            <svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                              <path d="M11.999 2.002c5.523 0 10 4.477 10 10s-4.477 10-10 10-10-4.477-10-10 4.477-10 10-10zm0 2.75a7.25 7.25 0 100 14.5 7.25 7.25 0 000-14.5zM10.495 8.242a.75.75 0 00-1.49-.084l-1.5 8.5a.75.75 0 101.49.084l1.5-8.5zm3.75 0a.75.75 0 00-1.49-.084l-1.5 8.5a.75.75 0 101.49.084l1.5-8.5z" />
+                            </svg>
+                            <a href="https://scholar.google.com/citations?user=your_scholar_id" target="_blank" rel="noopener noreferrer">Google Scholar</a>
+                        </li> -->
+                    </ul>
+                </div>
+            </section>
+        </main>
+
+    </div>
+    
+    <script>
+        // --- Theme Toggler Script ---
+        const themeToggleButton = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        // Function to apply the saved theme on page load
+        const applyTheme = () => {
+            const savedTheme = localStorage.getItem('theme');
+            // Default to light mode, but switch to dark if it's the saved preference
+            if (savedTheme === 'dark') {
+                body.classList.add('dark-mode');
+            } else {
+                body.classList.remove('dark-mode');
+            }
+        };
+
+        // Function to toggle the theme and save the preference
+        const toggleTheme = () => {
+            body.classList.toggle('dark-mode');
+            // Save the new theme preference to localStorage
+            const newTheme = body.classList.contains('dark-mode') ? 'dark' : 'light';
+            localStorage.setItem('theme', newTheme);
+        };
+
+        // Event listener for the theme toggle button
+        themeToggleButton.addEventListener('click', toggleTheme);
+
+        // Apply the theme when the DOM is fully loaded
+        document.addEventListener('DOMContentLoaded', applyTheme);
+    </script>
+
+</body>
+</html>
