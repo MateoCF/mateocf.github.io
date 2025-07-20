@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="shortcut icon" href="eye.png" type="image/x-icon">
+    <link rel="shortcut icon" href="./eye.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         body {
@@ -153,6 +153,8 @@
         let players = {}; // Stores all active YT.Player instances
         let observer; // The IntersectionObserver instance
         let videoId = '';
+        let isAudioUnlocked = false; // Tracks if user has interacted to allow sound
+
         const randomVideoList = [
             '6xpE2-IGPy8', // baldwin love
             'eF9BtrX0YEE', // chomsky 
@@ -266,6 +268,7 @@
             generateBtn.disabled = false;
             randomVideoBtn.disabled = false;
             urlInput.disabled = false;
+            isAudioUnlocked = false; // Reset audio lock status
         }
 
         /**
@@ -314,10 +317,13 @@
                 section.className = 'scroll-snap-child relative flex items-center justify-center bg-black';
                 section.innerHTML = `
                     <div class="player-cover-wrapper"><div id="${playerContainerId}"></div></div>
-                    <div class="absolute inset-0 z-10" onclick="window.toggleMute('${segmentId}')"></div>
-                    <div id="mute-icon-${segmentId}" class="absolute top-5 right-5 z-20 text-white drop-shadow-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" /></svg>
-                    </div>
+                    
+                    <!-- Mute/Unmute Button -->
+                    <button id="mute-btn-${segmentId}" onclick="window.handleMuteToggle(event, '${segmentId}')" class="absolute top-5 right-5 z-20 bg-black bg-opacity-50 p-2 rounded-full text-white">
+                        <svg id="icon-muted-${segmentId}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"> <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 9.75 19.5 12m0 0 2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6 4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" /> </svg>
+                        <svg id="icon-unmuted-${segmentId}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 hidden"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" /></svg>
+                    </button>
+                    
                     <div class="absolute right-3 bottom-24 md:bottom-32 z-20 flex flex-col items-center space-y-6">
                         <button onclick="window.handleLike(event, '${segmentId}')" class="action-button text-center text-white">
                             <svg class="w-9 h-9 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
@@ -355,9 +361,9 @@
         function handleIntersect(entries) {
             entries.forEach(entry => {
                 const player = players[entry.target.id];
+                
                 if (entry.isIntersecting) {
                     if (player) {
-                        player.unMute();
                         player.playVideo();
                     } else {
                         createPlayerForSegment(entry.target.id);
@@ -365,7 +371,6 @@
                 } else {
                     if (player?.pauseVideo) {
                         player.pauseVideo();
-                        player.mute();
                     }
                 }
             });
@@ -380,26 +385,55 @@
             const playerContainerId = `player-${segmentIndex}`;
             players[segmentId] = new YT.Player(playerContainerId, {
                 videoId: videoId,
-                playerVars: { 'autoplay': 1, 'controls': 0, 'rel': 0, 'showinfo': 0, 'iv_load_policy': 3, 'modestbranding': 1, 'start': startTime, 'playsinline': 1 },
+                playerVars: { 
+                    'autoplay': 1, 
+                    'controls': 0, 
+                    'rel': 0, 
+                    'showinfo': 0, 
+                    'iv_load_policy': 3, 
+                    'modestbranding': 1, 
+                    'start': startTime, 
+                    'playsinline': 1,
+                    'mute': 1 // Start muted to allow autoplay
+                },
                 events: { 'onReady': onPlayerReady, 'onStateChange': onPlayerStateChange }
             });
         }
-        
+
         /**
-         * Toggles the mute state for the currently playing video.
+         * Handles mute/unmute toggling from the dedicated button.
          */
-        window.toggleMute = (segmentId) => {
-             const player = players[segmentId];
-             if (!player) return;
-             const muteIconContainer = document.getElementById(`mute-icon-${segmentId}`);
-             if (player.isMuted()) {
-                 player.unMute();
-                 muteIconContainer.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" /></svg>`;
-             } else {
-                 player.mute();
-                 muteIconContainer.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8"><path stroke-linecap="round" stroke-linejoin="round" d="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l-2.25 2.25M19.5 12l2.25-2.25M12.75 4.975A10.023 10.023 0 003 12m0 0a10.023 10.023 0 009.75 7.025M3 12h18M12 4.975v14.05" /></svg>`;
-             }
-        }
+        window.handleMuteToggle = (event, segmentId) => {
+            event.stopPropagation(); // Prevent click from bubbling to any other handlers
+            const player = players[segmentId];
+            if (!player) return;
+
+            // First-time interaction: Unlock audio for the session
+            if (!isAudioUnlocked) {
+                isAudioUnlocked = true;
+                // Unmute all players and update their icons
+                Object.values(players).forEach(p => {
+                    p.unMute();
+                    const id = p.getIframe().closest('.scroll-snap-child').id;
+                    document.getElementById(`icon-muted-${id}`)?.classList.add('hidden');
+                    document.getElementById(`icon-unmuted-${id}`)?.classList.remove('hidden');
+                });
+                return;
+            }
+
+            // Subsequent interactions: Toggle mute for the specific player
+            const mutedIcon = document.getElementById(`icon-muted-${segmentId}`);
+            const unmutedIcon = document.getElementById(`icon-unmuted-${segmentId}`);
+            if (player.isMuted()) {
+                player.unMute();
+                mutedIcon?.classList.add('hidden');
+                unmutedIcon?.classList.remove('hidden');
+            } else {
+                player.mute();
+                mutedIcon?.classList.remove('hidden');
+                unmutedIcon?.classList.add('hidden');
+            }
+        };
 
         /**
          * Handles the click of the 'like' button.
@@ -449,7 +483,7 @@
          * Called when a player is ready.
          */
         function onPlayerReady(event) {
-            event.target.unMute();
+            // Player starts muted via playerVars, so it will autoplay successfully.
             event.target.playVideo();
         }
 
@@ -460,6 +494,8 @@
             const player = event.target;
             const segmentId = player.getIframe().closest('.scroll-snap-child')?.id;
             if (!segmentId) return;
+            
+            // This handles the 15-second loop logic
             const segmentIndex = parseInt(segmentId.split('-')[1]);
             const startTime = segmentIndex * 15;
             const endTime = startTime + 15;
