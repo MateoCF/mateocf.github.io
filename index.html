@@ -153,7 +153,7 @@
         let players = {}; // Stores all active YT.Player instances
         let observer; // The IntersectionObserver instance
         let videoId = '';
-        let isAudioUnlocked = false; // Tracks if user has interacted to allow sound
+        let isGloballyMuted = false; // Tracks the user's desired mute state after interaction
 
         const randomVideoList = [
             '6xpE2-IGPy8', // baldwin love
@@ -268,7 +268,7 @@
             generateBtn.disabled = false;
             randomVideoBtn.disabled = false;
             urlInput.disabled = false;
-            isAudioUnlocked = false; // Reset audio lock status
+            isGloballyMuted = false;
         }
 
         /**
@@ -394,7 +394,9 @@
                     'modestbranding': 1, 
                     'start': startTime, 
                     'playsinline': 1,
-                    'mute': 1 // Start muted to allow autoplay
+                    // ATTEMPT UNMUTED AUTOPLAY: This will be blocked by most modern browsers.
+                    // The video will likely start muted or not play at all.
+                    'mute': 0 
                 },
                 events: { 'onReady': onPlayerReady, 'onStateChange': onPlayerStateChange }
             });
@@ -405,34 +407,26 @@
          */
         window.handleMuteToggle = (event, segmentId) => {
             event.stopPropagation(); // Prevent click from bubbling to any other handlers
-            const player = players[segmentId];
-            if (!player) return;
+            isGloballyMuted = !isGloballyMuted;
 
-            // First-time interaction: Unlock audio for the session
-            if (!isAudioUnlocked) {
-                isAudioUnlocked = true;
-                // Unmute all players and update their icons
-                Object.values(players).forEach(p => {
-                    p.unMute();
-                    const id = p.getIframe().closest('.scroll-snap-child').id;
-                    document.getElementById(`icon-muted-${id}`)?.classList.add('hidden');
-                    document.getElementById(`icon-unmuted-${id}`)?.classList.remove('hidden');
-                });
-                return;
-            }
-
-            // Subsequent interactions: Toggle mute for the specific player
-            const mutedIcon = document.getElementById(`icon-muted-${segmentId}`);
-            const unmutedIcon = document.getElementById(`icon-unmuted-${segmentId}`);
-            if (player.isMuted()) {
-                player.unMute();
-                mutedIcon?.classList.add('hidden');
-                unmutedIcon?.classList.remove('hidden');
+            if (isGloballyMuted) {
+                Object.values(players).forEach(p => p.mute());
             } else {
-                player.mute();
-                mutedIcon?.classList.remove('hidden');
-                unmutedIcon?.classList.add('hidden');
+                Object.values(players).forEach(p => p.unMute());
             }
+
+            // Update icons for all visible buttons
+            document.querySelectorAll('[id^="mute-btn-"]').forEach(btn => {
+                const mutedIcon = btn.querySelector('[id^="icon-muted-"]');
+                const unmutedIcon = btn.querySelector('[id^="icon-unmuted-"]');
+                if (isGloballyMuted) {
+                    mutedIcon?.classList.remove('hidden');
+                    unmutedIcon?.classList.add('hidden');
+                } else {
+                    mutedIcon?.classList.add('hidden');
+                    unmutedIcon?.classList.remove('hidden');
+                }
+            });
         };
 
         /**
@@ -483,8 +477,20 @@
          * Called when a player is ready.
          */
         function onPlayerReady(event) {
-            // Player starts muted via playerVars, so it will autoplay successfully.
-            event.target.playVideo();
+            const player = event.target;
+            player.playVideo();
+            
+            // After a short delay, check if the browser forced the video to be muted.
+            // If so, update the icon to reflect the actual state.
+            setTimeout(() => {
+                const segmentId = player.getIframe().closest('.scroll-snap-child').id;
+                const isMuted = player.isMuted();
+                if (isMuted) {
+                    isGloballyMuted = true;
+                    document.getElementById(`icon-muted-${segmentId}`)?.classList.remove('hidden');
+                    document.getElementById(`icon-unmuted-${segmentId}`)?.classList.add('hidden');
+                }
+            }, 500);
         }
 
         /**
