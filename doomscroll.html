@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Doomscroll Machine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="shortcut icon" href="./eye.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Ensures the scroll container is always the full height of the viewport */
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            background-color: #000;
+        }
+        /* Custom scroll-snap behavior for the TikTok-like feed */
+        .scroll-snap-container {
+            scroll-snap-type: y mandatory;
+            height: 100vh;
+            overflow-y: scroll;
+        }
+        .scroll-snap-child {
+            scroll-snap-align: start;
+            height: 100vh;
+            width: 100vw;
+        }
+        /* Hide scrollbars across browsers */
+        .scroll-snap-container::-webkit-scrollbar {
+            display: none;
+        }
+        .scroll-snap-container {
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
+
+        /* This wrapper ensures the video covers the entire screen, cropping if necessary */
+        .player-cover-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        /* The iframe is made much larger than the container and centered. */
+        .player-cover-wrapper iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 177.78vh; /* 100 * 16 / 9 */
+            min-width: 100vw;
+            height: 100vw; /* 100 * 9 / 16 */
+            min-height: 100vh;
+            transform: translate(-50%, -50%);
+        }
+        
+        /* Styles for the new action buttons */
+        .action-button svg {
+            transition: transform 0.2s ease, color 0.2s ease, fill 0.2s ease;
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.5));
+        }
+        .action-button:active svg {
+            transform: scale(1.2);
+        }
+        .action-button.liked svg {
+            fill: #EF4444; /* red-500 */
+            stroke: #EF4444;
+        }
+
+    </style>
+</head>
+<body class="bg-black text-white">
+
+    <!-- Initial UI for URL Input -->
+    <div id="input-container" class="fixed inset-0 z-40 flex flex-col items-center md:justify-center bg-black bg-opacity-95 transition-opacity duration-500 ease-in-out p-4 overflow-y-auto">
+        <div class="text-center">
+            <h1 class="text-5xl md:text-6xl font-black tracking-tighter mb-2 mt-12 md:mt-0">The Doomscroll Machine</h1>
+            <p class="text-lg md:text-xl text-gray-400 mb-8">Paste a YouTube URL to create a scrollable feed.</p>
+        </div>
+        <div class="w-full max-w-md px-4">
+            <input id="youtube-url" type="text" placeholder="e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ" class="w-full p-4 rounded-lg bg-gray-900 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500 transition-all">
+            <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                 <button id="generate-feed" class="w-full p-4 bg-red-600 hover:bg-red-700 rounded-lg font-bold text-lg transition-transform transform hover:scale-105">
+                    Generate Feed
+                </button>
+                <button id="random-video-btn" class="w-full p-4 bg-gray-700 hover:bg-gray-600 rounded-lg font-bold text-lg transition-transform transform hover:scale-105">
+                    Surprise Me!
+                </button>
+            </div>
+        </div>
+        <div id="loading-indicator" class="mt-8 text-white text-center hidden">
+            <svg class="animate-spin h-8 w-8 text-white mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <p class="mt-2 text-gray-300">Analyzing video and creating clips...</p>
+        </div>
+
+        <!-- About Section -->
+        <div class="text-center text-gray-500 px-6 max-w-2xl mt-16">
+            <h3 class="font-bold text-gray-400">About This Absurdity</h3>
+            <p class="text-sm mt-1">
+                Built for the modern brain that craves constant, bite-sized stimulation. We take perfectly good YouTube videos and chop them into a relentless, scrollable feed because, let's be honest, who has the time for a full 4-minute video anymore? Consider this your doomscroll rehab... or enabler. You decide.
+            </p>
+             <p class="text-xs mt-4">
+                A project by <a href="/" target="_blank" class="text-red-400 hover:underline">Mateo</a>.
+            </p>
+        </div>
+    </div>
+    
+    <!-- Custom Message/Alert Box -->
+    <div id="message-box" class="hidden fixed top-5 left-1/2 -translate-x-1/2 z-50 bg-green-500 text-white py-2 px-4 rounded-lg shadow-lg">
+        <p id="message-text"></p>
+    </div>
+
+    <!-- Container for the video feed -->
+    <main id="feed-container" class="scroll-snap-container">
+        <!-- Video segments will be injected here by JavaScript -->
+    </main>
+    
+    <!-- Floating 'Back' button to return to the input screen -->
+    <button id="back-button" class="hidden fixed top-5 left-5 z-30 bg-black bg-opacity-50 text-white px-4 py-2 rounded-lg hover:bg-opacity-75 transition-all">
+        &larr; New Video
+    </button>
+
+    <!-- Comments Modal -->
+    <div id="comments-modal" class="hidden fixed inset-0 z-40 bg-black bg-opacity-70 flex items-center justify-center p-4">
+        <div class="bg-gray-900 rounded-lg shadow-xl p-6 w-full max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-white">Comments</h2>
+                <button id="close-comments-modal" class="text-gray-400 hover:text-white text-3xl leading-none">&times;</button>
+            </div>
+            <div id="comments-content" class="text-gray-300 space-y-4">
+                <p>Viewing comments directly is not supported.</p>
+                <a id="youtube-link" href="#" target="_blank" rel="noopener noreferrer" class="inline-block w-full text-center p-3 bg-red-600 hover:bg-red-700 rounded-lg font-bold transition-colors">
+                    Watch on YouTube to see comments
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- YouTube IFrame API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+    <script type="module">
+        // --- GLOBAL STATE ---
+        let players = {}; // Stores all active YT.Player instances
+        let observer; // The IntersectionObserver instance
+        let videoId = '';
+        let isGloballyMuted = false; // Tracks the user's desired mute state after interaction
+
+        const randomVideoList = [
+            '6xpE2-IGPy8', // baldwin love
+            'eF9BtrX0YEE', // chomsky 
+            'UoCrx0scCkM', // zappa mental health
+            'A_ujr9gi3wk', // dfw tvs
+        ];
+
+        // --- DOM ELEMENTS ---
+        const inputContainer = document.getElementById('input-container');
+        const urlInput = document.getElementById('youtube-url');
+        const generateBtn = document.getElementById('generate-feed');
+        const randomVideoBtn = document.getElementById('random-video-btn');
+        const feedContainer = document.getElementById('feed-container');
+        const loadingIndicator = document.getElementById('loading-indicator');
+        const backButton = document.getElementById('back-button');
+        const messageBox = document.getElementById('message-box');
+        const messageText = document.getElementById('message-text');
+        const commentsModal = document.getElementById('comments-modal');
+        const closeCommentsModalBtn = document.getElementById('close-comments-modal');
+        const youtubeLink = document.getElementById('youtube-link');
+
+        // --- CORE FUNCTIONS ---
+
+        /**
+         * This function is the entry point, called automatically when the YouTube API script is loaded.
+         */
+        window.onYouTubeIframeAPIReady = () => {
+            generateBtn.addEventListener('click', handleGenerateFeed);
+            randomVideoBtn.addEventListener('click', handleRandomVideo);
+            backButton.addEventListener('click', resetToInput);
+            closeCommentsModalBtn.addEventListener('click', closeCommentsModal);
+            commentsModal.addEventListener('click', (e) => {
+                if (e.target.id === 'comments-modal') closeCommentsModal();
+            });
+        };
+
+        /**
+         * Shows a custom message to the user.
+         */
+        function showMessage(msg, isError = false) {
+            messageText.textContent = msg;
+            messageBox.classList.remove('hidden', 'bg-red-500', 'bg-green-500');
+            messageBox.classList.add(isError ? 'bg-red-500' : 'bg-green-500');
+            setTimeout(() => {
+                messageBox.classList.add('hidden');
+            }, 3000);
+        }
+
+        /**
+         * Extracts the 11-character video ID from various YouTube URL formats.
+         */
+        function extractVideoId(url) {
+            const regex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+            const matches = url.match(regex);
+            return matches ? matches[1] : null;
+        }
+        
+        /**
+         * Starts the process of creating the video feed.
+         * @param {string} id The YouTube video ID.
+         */
+        function startFeedGeneration(id) {
+            videoId = id;
+            loadingIndicator.style.display = 'block';
+            generateBtn.disabled = true;
+            randomVideoBtn.disabled = true;
+            urlInput.disabled = true;
+
+            const tempPlayerDiv = document.createElement('div');
+            tempPlayerDiv.id = 'temp-player';
+            tempPlayerDiv.style.display = 'none';
+            document.body.appendChild(tempPlayerDiv);
+            new YT.Player('temp-player', {
+                videoId: videoId,
+                events: { 'onReady': onTempPlayerReady, 'onError': onPlayerError }
+            });
+        }
+
+        /**
+         * Handles the 'Generate Feed' button click.
+         */
+        function handleGenerateFeed() {
+            const id = extractVideoId(urlInput.value);
+            if (!id) {
+                showMessage("Invalid YouTube URL. Please try again.", true);
+                return;
+            }
+            startFeedGeneration(id);
+        }
+
+        /**
+         * Handles the 'Surprise Me' button click.
+         */
+        function handleRandomVideo() {
+            const randomIndex = Math.floor(Math.random() * randomVideoList.length);
+            const randomId = randomVideoList[randomIndex];
+            urlInput.value = `https://www.youtube.com/watch?v=${randomId}`;
+            startFeedGeneration(randomId);
+        }
+
+        /**
+         * Resets the UI back to the initial URL input screen.
+         */
+        function resetToInput() {
+            Object.values(players).forEach(player => player?.destroy?.());
+            players = {};
+            feedContainer.innerHTML = '';
+            inputContainer.classList.remove('opacity-0', 'pointer-events-none');
+            backButton.classList.add('hidden');
+            urlInput.value = '';
+            generateBtn.disabled = false;
+            randomVideoBtn.disabled = false;
+            urlInput.disabled = false;
+            isGloballyMuted = false;
+        }
+
+        /**
+         * Handles errors from the YouTube player.
+         */
+        function onPlayerError() {
+            showMessage("Could not load video. It may be private or restricted.", true);
+            loadingIndicator.style.display = 'none';
+            generateBtn.disabled = false;
+            randomVideoBtn.disabled = false;
+            urlInput.disabled = false;
+            document.getElementById('temp-player')?.remove();
+        }
+
+        /**
+         * Callback for the temporary player to get video duration.
+         */
+        function onTempPlayerReady(event) {
+            const duration = event.target.getDuration();
+            event.target.destroy();
+            document.getElementById('temp-player')?.remove();
+            createFeedSegments(duration);
+        }
+
+        /**
+         * Creates the individual video slides in the DOM.
+         */
+        function createFeedSegments(duration) {
+            feedContainer.innerHTML = '';
+            if (observer) observer.disconnect();
+            const segmentCount = Math.floor(duration / 15);
+            if (segmentCount === 0) {
+                showMessage("Video is too short to create clips.", true);
+                loadingIndicator.style.display = 'none';
+                generateBtn.disabled = false;
+                randomVideoBtn.disabled = false;
+                urlInput.disabled = false;
+                return;
+            }
+            initializeObserver();
+            for (let i = 0; i < segmentCount; i++) {
+                const segmentId = `segment-${i}`;
+                const playerContainerId = `player-${i}`;
+                const section = document.createElement('section');
+                section.id = segmentId;
+                section.className = 'scroll-snap-child relative flex items-center justify-center bg-black';
+                section.innerHTML = `
+                    <div class="player-cover-wrapper"><div id="${playerContainerId}"></div></div>
+                    
+                    <!-- Mute/Unmute Button -->
+                    <button id="mute-btn-${segmentId}" onclick="window.handleMuteToggle(event, '${segmentId}')" class="absolute top-5 right-5 z-20 bg-black bg-opacity-50 p-2 rounded-full text-white">
+                        <svg id="icon-muted-${segmentId}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6"> <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 9.75 19.5 12m0 0 2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6 4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" /> </svg>
+                        <svg id="icon-unmuted-${segmentId}" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 hidden"><path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" /></svg>
+                    </button>
+                    
+                    <div class="absolute right-3 bottom-24 md:bottom-32 z-20 flex flex-col items-center space-y-6">
+                        <button onclick="window.handleLike(event, '${segmentId}')" class="action-button text-center text-white">
+                            <svg class="w-9 h-9 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
+                            <span class="text-sm font-semibold">Like</span>
+                        </button>
+                        <button onclick="window.handleComment(event, '${videoId}')" class="action-button text-center text-white">
+                            <svg class="w-9 h-9 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>
+                            <span class="text-sm font-semibold">Comment</span>
+                        </button>
+                        <button onclick="window.handleShare(event)" class="action-button text-center text-white">
+                            <svg class="w-9 h-9 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12s-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6.002l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.368a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path></svg>
+                            <span class="text-sm font-semibold">Share</span>
+                        </button>
+                    </div>
+                `;
+                feedContainer.appendChild(section);
+                observer.observe(section);
+            }
+            inputContainer.classList.add('opacity-0', 'pointer-events-none');
+            backButton.classList.remove('hidden');
+            loadingIndicator.style.display = 'none';
+        }
+
+        /**
+         * Initializes the IntersectionObserver.
+         */
+        function initializeObserver() {
+            const options = { root: feedContainer, threshold: 0.8 };
+            observer = new IntersectionObserver(handleIntersect, options);
+        }
+
+        /**
+         * The callback for the IntersectionObserver to play/pause videos.
+         */
+        function handleIntersect(entries) {
+            entries.forEach(entry => {
+                const player = players[entry.target.id];
+                
+                if (entry.isIntersecting) {
+                    if (player) {
+                        player.playVideo();
+                    } else {
+                        createPlayerForSegment(entry.target.id);
+                    }
+                } else {
+                    if (player?.pauseVideo) {
+                        player.pauseVideo();
+                    }
+                }
+            });
+        }
+
+        /**
+         * Creates a new YouTube player instance for a segment.
+         */
+        function createPlayerForSegment(segmentId) {
+            const segmentIndex = parseInt(segmentId.split('-')[1]);
+            const startTime = segmentIndex * 15;
+            const playerContainerId = `player-${segmentIndex}`;
+            players[segmentId] = new YT.Player(playerContainerId, {
+                videoId: videoId,
+                playerVars: { 
+                    'autoplay': 1, 
+                    'controls': 0, 
+                    'rel': 0, 
+                    'showinfo': 0, 
+                    'iv_load_policy': 3, 
+                    'modestbranding': 1, 
+                    'start': startTime, 
+                    'playsinline': 1,
+                    // ATTEMPT UNMUTED AUTOPLAY: This will be blocked by most modern browsers.
+                    // The video will likely start muted or not play at all.
+                    'mute': 0 
+                },
+                events: { 'onReady': onPlayerReady, 'onStateChange': onPlayerStateChange }
+            });
+        }
+
+        /**
+         * Handles mute/unmute toggling from the dedicated button.
+         */
+        window.handleMuteToggle = (event, segmentId) => {
+            event.stopPropagation(); // Prevent click from bubbling to any other handlers
+            isGloballyMuted = !isGloballyMuted;
+
+            if (isGloballyMuted) {
+                Object.values(players).forEach(p => p.mute());
+            } else {
+                Object.values(players).forEach(p => p.unMute());
+            }
+
+            // Update icons for all visible buttons
+            document.querySelectorAll('[id^="mute-btn-"]').forEach(btn => {
+                const mutedIcon = btn.querySelector('[id^="icon-muted-"]');
+                const unmutedIcon = btn.querySelector('[id^="icon-unmuted-"]');
+                if (isGloballyMuted) {
+                    mutedIcon?.classList.remove('hidden');
+                    unmutedIcon?.classList.add('hidden');
+                } else {
+                    mutedIcon?.classList.add('hidden');
+                    unmutedIcon?.classList.remove('hidden');
+                }
+            });
+        };
+
+        /**
+         * Handles the click of the 'like' button.
+         */
+        window.handleLike = (event, segmentId) => {
+            event.stopPropagation();
+            event.currentTarget.classList.toggle('liked');
+        }
+
+        /**
+         * Handles the click of the 'share' button.
+         */
+        window.handleShare = (event) => {
+            event.stopPropagation();
+            const textArea = document.createElement("textarea");
+            textArea.value = window.location.href;
+            textArea.style.position = "fixed";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showMessage("Link copied to clipboard!");
+            } catch (err) {
+                showMessage("Failed to copy link.", true);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        /**
+         * Handles the click of the 'comment' button.
+         */
+        window.handleComment = (event, currentVideoId) => {
+            event.stopPropagation();
+            youtubeLink.href = `https://www.youtube.com/watch?v=${currentVideoId}`;
+            commentsModal.classList.remove('hidden');
+        }
+
+        /**
+         * Closes the comments modal.
+         */
+        function closeCommentsModal() {
+            commentsModal.classList.add('hidden');
+        }
+
+        /**
+         * Called when a player is ready.
+         */
+        function onPlayerReady(event) {
+            const player = event.target;
+            player.playVideo();
+            
+            // After a short delay, check if the browser forced the video to be muted.
+            // If so, update the icon to reflect the actual state.
+            setTimeout(() => {
+                const segmentId = player.getIframe().closest('.scroll-snap-child').id;
+                const isMuted = player.isMuted();
+                if (isMuted) {
+                    isGloballyMuted = true;
+                    document.getElementById(`icon-muted-${segmentId}`)?.classList.remove('hidden');
+                    document.getElementById(`icon-unmuted-${segmentId}`)?.classList.add('hidden');
+                }
+            }, 500);
+        }
+
+        /**
+         * The core logic for looping a 15-second segment.
+         */
+        function onPlayerStateChange(event) {
+            const player = event.target;
+            const segmentId = player.getIframe().closest('.scroll-snap-child')?.id;
+            if (!segmentId) return;
+            
+            // This handles the 15-second loop logic
+            const segmentIndex = parseInt(segmentId.split('-')[1]);
+            const startTime = segmentIndex * 15;
+            const endTime = startTime + 15;
+            if (event.data === YT.PlayerState.PLAYING) {
+                if (player.timeCheckInterval) clearInterval(player.timeCheckInterval);
+                player.timeCheckInterval = setInterval(() => {
+                    const currentTime = player.getCurrentTime();
+                    if (currentTime >= endTime || currentTime < startTime) {
+                        player.seekTo(startTime, true);
+                    }
+                }, 250);
+            } else {
+                if (player.timeCheckInterval) {
+                    clearInterval(player.timeCheckInterval);
+                    player.timeCheckInterval = null;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
