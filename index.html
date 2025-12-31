@@ -539,7 +539,7 @@
 
         // Function to toggle the theme and save the preference
         const toggleTheme = () => {
-            body.classList.toggle('dark-mode');
+            body.classList.toggle('light-mode');
             // Save the new theme preference to localStorage
             const newTheme = body.classList.contains('dark-mode') ? 'dark' : 'light';
             localStorage.setItem('theme', newTheme);
